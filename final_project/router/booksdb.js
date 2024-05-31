@@ -1,3 +1,12 @@
+function getBooks(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(books);
+        },1000);
+        
+    })
+}
+
 let books = {
       1: {"author": "Chinua Achebe","title": "Things Fall Apart", "reviews": {} },
       2: {"author": "Hans Christian Andersen","title": "Fairy tales", "reviews": {} },
@@ -12,3 +21,4 @@ let books = {
 }
 
 module.exports=books;
+module.exports=getBooks;

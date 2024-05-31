@@ -7,6 +7,64 @@ function getBooks(){
     })
 }
 
+function getISBN(isbn){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(books[isbn]);
+        },1000);
+    })
+}
+
+function getAuthor(reqAuthor){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const targetAuthor = reqAuthor;
+            let foundBook = null;
+        
+            // Convert books object to an array and iterate over it
+            const bookArray = Object.values(books);
+        
+            for (let i = 0; i < bookArray.length; i++) {
+                if (bookArray[i].author === targetAuthor) {
+                    foundBook = bookArray[i];
+                    break;
+                }
+            }
+        
+            if (foundBook) {
+                resolve(foundBook);
+            } else {
+                resolve({ message: 'Book not found' });
+            } 
+        },1000)
+    })
+}
+
+function getTitle(reqTitle){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const targetTitle = reqTitle;
+            let foundBook = null;
+
+            const bookArray = Object.values(books);
+
+            for (let i = 0; i < bookArray.length; i++) {
+                if (bookArray[i].title === targetTitle) {
+                    foundBook = bookArray[i];
+                    break;
+                }
+            }
+
+            if (foundBook) {
+                resolve(foundBook);
+            } else {
+                resolve({ message: 'Book not found' });
+            }
+
+                },1000);
+            })
+}
+
 let books = {
       1: {"author": "Chinua Achebe","title": "Things Fall Apart", "reviews": {} },
       2: {"author": "Hans Christian Andersen","title": "Fairy tales", "reviews": {} },
@@ -22,3 +80,6 @@ let books = {
 
 module.exports=books;
 module.exports=getBooks;
+module.exports=getISBN;
+module.exports=getAuthor;
+module.exports=getTitle;

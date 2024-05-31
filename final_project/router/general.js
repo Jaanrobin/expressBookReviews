@@ -1,6 +1,9 @@
 const express = require('express');
 let books = require("./booksdb.js");
 const getBooks = require('./booksdb.js');
+const getISBN = require('./booksdb.js');
+const getAuthor = require('./booksdb.js');
+const getTitle = require('./booksdb.js');
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
@@ -38,54 +41,20 @@ public_users.get('/',async function (req, res) {
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn',async function (req, res) {
   const isbn = req.params.isbn;
-  res.send(books[isbn])
+  const book = await getISBN(req.params.isbn)
+  res.send(book)
  });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-    const targetAuthor = req.params.author;
-    let foundBook = null;
-    console.log('Target Author:', targetAuthor);
-
-    // Convert books object to an array and iterate over it
-    const bookArray = Object.values(books);
-
-    for (let i = 0; i < bookArray.length; i++) {
-        if (bookArray[i].author === targetAuthor) {
-            foundBook = bookArray[i];
-            break;
-        }
-    }
-
-    if (foundBook) {
-        res.send(foundBook);
-    } else {
-        res.status(404).send({ message: 'Book not found' });
-    }
+public_users.get('/author/:author',async function (req, res) {
+    res.send(await getAuthor(req.params.author))
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
-    const targetTitle = req.params.title;
-    let foundBook = null;
-
-    const bookArray = Object.values(books);
-
-    for (let i = 0; i < bookArray.length; i++) {
-        if (bookArray[i].title === targetTitle) {
-            foundBook = bookArray[i];
-            break;
-        }
-    }
-
-    if (foundBook) {
-        res.send(foundBook);
-    } else {
-        res.status(404).send({ message: 'Book not found' });
-    }
-
+public_users.get('/title/:title',async function (req, res) {
+    res.send(await getTitle(req.params.title))
 });
 
 //  Get book review
